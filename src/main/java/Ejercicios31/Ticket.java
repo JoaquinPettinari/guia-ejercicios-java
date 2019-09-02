@@ -1,4 +1,4 @@
-package Ejercicios3;
+package Ejercicios31;
 
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -7,20 +7,25 @@ import java.lang.String;
 
 public class Ticket {
 
-        protected List<LineaTicket> productos;
-        int precioFinal;
-        int unidadesVendidas;
+       	protected List<LineaTicket> productos;
+        protected int precioFinal;
+        protected int unidadesVendidas;
 
         public Ticket(){
                 this.productos = new ArrayList<>();
         }
-        private int getUnidadesVendidas(){
+        
+        protected void agregarLineaTicket(LineaTicket l1){
+        	productos.add(l1);
+        }
+
+        protected int getUnidadesVendidas(){
               return productos.stream()
               .mapToInt(p -> p.getUnidadesVendidas())
               .sum();
         }
 
-        private int getPrecioFinal(){
+        protected int getPrecioFinal(){
                 return productos.stream()
                         .mapToInt(p -> p.getPrecio())
                         .sum();
@@ -30,8 +35,9 @@ public class Ticket {
                 System.out.println(" ********* Impresion ticket ********* ");
                 System.out.println("Cantidades vendidas: " + unidadesVendidas);
                 System.out.println("precio final: " + precioFinal);
-                productos.forEach(producto -> producto.toString());
+                productos.forEach(producto -> System.out.println(producto.toString()));
         }
+        
 
         public void menu(){
                 Scanner leer = new Scanner(System.in);
@@ -46,16 +52,19 @@ public class Ticket {
                         System.out.println("Ingrese opcion: ");
                         int opcion = leer.nextInt();
                         if(opcion == 1){
-                                System.out.print("Ingrese nombre producto");
+                                System.out.print("Ingrese nombre producto: ");
                                 String nombreProducto = leer.next();
-                                System.out.println("Ingrese cantidad de unidades vendidas");
+                                System.out.print("Ingrese cantidad de unidades vendidas: ");
                                 int cantidades = leer.nextInt();
-                                System.out.println("Ingrese el precio: ");
+                                this.unidadesVendidas += cantidades;
+                                System.out.print("Ingrese el precio: ");
                                 int precio = leer.nextInt();
+                                this.precioFinal += precio;
                                 LineaTicket l1 = new LineaTicket(nombreProducto, cantidades, precio);
+                                productos.add(l1);
                         }
                         else if(opcion == 2){
-                                System.out.println(imprimirTicket());
+                                this.imprimirTicket();
                         }
                         else if(opcion == 3){
                                 seguir = false;
